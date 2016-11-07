@@ -3,7 +3,7 @@ GFFloatingActionMenu
 
 GFFloatingActionMenu was inspired by https://github.com/futuresimple/android-floating-action-button
 
-A few additions have been made but with the adoption of the support library's FloatingActionButton
+A few additions have been made but with the adoption of the support library's FloatingActionButton.
 
 If you would like to contribute or have any issues, please use the issue tracker or email me directly at lgfz71@gmail.com
 
@@ -19,7 +19,7 @@ Installation:
 
 - Follow these steps to include aar binary in your project:
 
-    1: Copy com.github.gfranks.minimal.notification-2.1.aar into your projects libs/ directory.
+    1: Copy com.github.gfranks.floatingactionmenu-1.0.aar into your projects libs/ directory.
 
     2: Include the following either in your top level build.gradle file or your module specific one:
     ```
@@ -30,10 +30,8 @@ Installation:
      }
     ```
     3: Under your dependencies for your main module's build.gradle file, you can reference that aar file like so: 
-    ```compile 'com.github.gfranks.minimal.notification:com.github.gfranks.minimal.notification-2.1@aar'```
+    ```compile 'com.github.gfranks.floatingactionmenu:com.github.gfranks.floatingactionmenu-1.0@aar'```
     
-    (NOTE: v1.0 and v2.0 are still available, if you wish to continue using it. Follow the same binary approach but reference 1.0@aar or 2.0@aar)
-
 License
 -------
 Copyright (c) 2015 Garrett Franks. All rights reserved.
