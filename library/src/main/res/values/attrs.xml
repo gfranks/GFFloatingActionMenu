@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="GFFloatingActionMenu">
+        <attr name="fam_rippleColor" format="color"/>
+        <attr name="fam_backgroundTint" format="color"/>
+        <attr name="fam_iconTint" format="color"/>
+        <attr name="fam_icon" format="reference"/>
+        <attr name="fam_elevation" format="dimension"/>
+        <attr name="fam_expandIconRotation" format="float" />
+        <attr name="fam_collapseIconRotation" format="float" />
+        <attr name="fam_expandDirection" format="enum">
+            <enum name="up" value="0"/>
+            <enum name="down" value="1"/>
+            <enum name="left" value="2"/>
+            <enum name="right" value="3"/>
+            <enum name="arcLeftUp" value="4"/>
+            <enum name="arcLeftDown" value="5"/>
+            <enum name="arcRightUp" value="6"/>
+            <enum name="arcRightDown" value="7"/>
+        </attr>
+    </declare-styleable>
+</resources>

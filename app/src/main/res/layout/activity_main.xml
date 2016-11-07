@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/coordinator_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:fitsSystemWindows="true">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <include layout="@layout/view_toolbar" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <include layout="@layout/activity_content" />
+
+    <com.github.gfranks.floatingactionmenu.GFFloatingActionMenu
+        android:id="@+id/fam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:fam_backgroundTint="@color/colorAccent"
+        app:fam_rippleColor="@color/colorAccentDark"
+        app:fam_expandDirection="up">
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_call"
+            app:backgroundTint="@color/colorAccent"
+            app:rippleColor="@color/colorAccentDark" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_email"
+            app:backgroundTint="@color/colorAccent"
+            app:rippleColor="@color/colorAccentDark" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_heart"
+            app:backgroundTint="@color/colorAccent"
+            app:rippleColor="@color/colorAccentDark" />
+
+    </com.github.gfranks.floatingactionmenu.GFFloatingActionMenu>
+
+</android.support.design.widget.CoordinatorLayout>

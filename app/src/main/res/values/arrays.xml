@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="fam_options">
+        <item>Up</item>
+        <item>Down</item>
+        <item>Left</item>
+        <item>Right</item>
+        <item>Arc Left Up</item>
+        <item>Arc Left Down</item>
+        <item>Arc Right Up</item>
+        <item>Arc Right Down</item>
+    </array>
+
+</resources>
