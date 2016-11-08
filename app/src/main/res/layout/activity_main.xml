@@ -28,7 +28,7 @@
         android:layout_margin="@dimen/fab_margin"
         app:fam_backgroundTint="@color/colorAccent"
         app:fam_rippleColor="@color/colorAccentDark"
-        app:fam_expandDirection="up">
+        app:fam_expandDirection="arcLeftUp">
 
         <android.support.design.widget.FloatingActionButton
             android:layout_width="wrap_content"

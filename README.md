@@ -7,7 +7,79 @@ A few additions have been made but with the adoption of the support library's Fl
 
 If you would like to contribute or have any issues, please use the issue tracker or email me directly at lgfz71@gmail.com
 
+![alt tag](https://raw.githubusercontent.com/gfranks/GFFloatingActionMenu/master/images/fam.gif)
 
+Usage:
+------
+
+```java
+<com.github.gfranks.floatingactionmenu.GFFloatingActionMenu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|end"
+    android:layout_margin="@dimen/fab_margin"
+    app:fam_rippleColor="@color/fab_color_dark"
+    app:fam_backgroundTint="@color/fab_color"
+    app:fam_icon="@drawable/ic_plus"
+    app:fam_iconTint="@color/white"
+    app:fam_expandDirection="arcLeftUp">
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tint="@color/white"
+        app:srcCompat="@drawable/fab_1_icon"
+        app:rippleColor="@color/fab_color_dark"
+        app:backgroundTint="@color/fab_color" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tint="@color/white"
+        app:srcCompat="@drawable/fab_2_icon"
+        app:rippleColor="@color/fab_color_dark"
+        app:backgroundTint="@color/fab_color" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tint="@color/white"
+        app:srcCompat="@drawable/fab_3_icon"
+        app:rippleColor="@color/fab_color_dark"
+        app:backgroundTint="@color/fab_color" />
+
+</com.github.gfranks.floatingactionmenu.GFFloatingActionMenu>
+```
+
+Customization:
+----------------
+
+ * `fam_rippleColor` Color for the ripple effect on the menu FloatingActionButton
+ * `fam_backgroundTint` Color for the menu FloatingActionButton
+ * `fam_iconTint` Color for the default/specified menu icon
+ * `fam_icon` Drawable resource for the menu icon, defaults to a plus (vector image supported)
+ * `fam_elevation` Elevation for the menu FloatingActionButton
+ * `fam_expandIconRotation` Expand rotation of the icon when expanding the menu
+ * `fam_collapseIconRotation` Collapsed rotation of the icon when expanding the menu
+ * `fam_expandDirection` Direction the menu will open (up, down, left, right, arcLeftUp, arcLeftDown, arcRightUp, arcRightDown)
+ 
+ Note: GFFloatingActionButton comes with a default CoordinatorLayout.Behavior supporting both AppBarLayout anchoring and bottom sheets. You may override this for your own Behaviors.  
+
+Callback Methods:
+-----------------
+
+```java
+/**
+ * OnFloatingActionsMenuUpdateListener
+ */
+void onMenuExpanded();
+void onMenuCollapsed();
+```
+    
 Installation:
 ------------
 
