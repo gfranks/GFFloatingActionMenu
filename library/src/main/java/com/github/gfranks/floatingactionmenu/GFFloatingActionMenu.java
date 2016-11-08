@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
@@ -53,8 +54,6 @@ public class GFFloatingActionMenu extends ViewGroup {
     public static final int EXPAND_ARC_RIGHT_DOWN = 7;
 
     private static final int ANIMATION_DURATION = 300;
-    private static final float COLLAPSED_PLUS_ROTATION = 0f;
-    private static final float EXPANDED_PLUS_ROTATION = 90f + 45f;
 
     private int mMenuRippleColor;
     private int mMenuBackgroundTint;
@@ -62,6 +61,8 @@ public class GFFloatingActionMenu extends ViewGroup {
     private Drawable mMenuIcon;
     private int mMenuElevation;
     private int mExpandDirection;
+    private float mCollapsedIconRotation = 0f;
+    private float mExpandedIconRotation = 90f + 45f;
     private int mButtonSpacing;
     private boolean mExpanded;
 
@@ -109,6 +110,8 @@ public class GFFloatingActionMenu extends ViewGroup {
         int menuIcon = attr.getResourceId(R.styleable.GFFloatingActionMenu_fam_icon, R.drawable.ic_plus);
         mMenuElevation = attr.getDimensionPixelSize(R.styleable.GFFloatingActionMenu_fam_elevation, -1);
         mExpandDirection = attr.getInt(R.styleable.GFFloatingActionMenu_fam_expandDirection, EXPAND_UP);
+        mExpandedIconRotation = attr.getFloat(R.styleable.GFFloatingActionMenu_fam_expandIconRotation, mExpandedIconRotation);
+        mCollapsedIconRotation = attr.getFloat(R.styleable.GFFloatingActionMenu_fam_collapseIconRotation, mCollapsedIconRotation);
         attr.recycle();
 
         mMenuIcon = ContextCompat.getDrawable(getContext(), menuIcon);
@@ -411,7 +414,7 @@ public class GFFloatingActionMenu extends ViewGroup {
             mTouchDelegateGroup.setEnabled(mExpanded);
 
             if (mRotatingDrawable != null) {
-                mRotatingDrawable.setRotation(mExpanded ? EXPANDED_PLUS_ROTATION : COLLAPSED_PLUS_ROTATION);
+                mRotatingDrawable.setRotation(mExpanded ? mExpandedIconRotation : mCollapsedIconRotation);
             }
 
             super.onRestoreInstanceState(savedState.getSuperState());
@@ -459,6 +462,26 @@ public class GFFloatingActionMenu extends ViewGroup {
 
     public int getMenuOptionCount() {
         return mButtonsCount - 1;
+    }
+
+    public void setMenuIcon(@DrawableRes int drawableResId) {
+        setMenuIcon(ContextCompat.getDrawable(getContext(), drawableResId));
+    }
+
+    public void setMenuIcon(Drawable drawable) {
+        mMenuButton.setImageDrawable(getMenuDrawable(drawable));
+    }
+
+    public void setExpandedIconRotation(float expandedIconRotation) {
+        mExpandedIconRotation = expandedIconRotation;
+        RotatingDrawable drawable = (RotatingDrawable) mMenuButton.getDrawable();
+        mMenuButton.setImageDrawable(getMenuDrawable(drawable.getDrawable(0)));
+    }
+
+    public void setCollapsedIconRotation(float collapsedIconRotation) {
+        mCollapsedIconRotation = collapsedIconRotation;
+        RotatingDrawable drawable = (RotatingDrawable) mMenuButton.getDrawable();
+        mMenuButton.setImageDrawable(getMenuDrawable(drawable.getDrawable(0)));
     }
 
     public void addButton(FloatingActionButton button) {
@@ -587,18 +610,7 @@ public class GFFloatingActionMenu extends ViewGroup {
         mMenuButton.setBackgroundTintList(ColorStateList.valueOf(mMenuBackgroundTint));
         Drawable drawable = DrawableCompat.wrap(mMenuIcon);
         DrawableCompat.setTint(drawable, mMenuIconTint);
-
-        final RotatingDrawable rotatingDrawable = new RotatingDrawable(drawable);
-        mRotatingDrawable = rotatingDrawable;
-        final OvershootInterpolator interpolator = new OvershootInterpolator();
-        final ObjectAnimator collapseAnimator = ObjectAnimator.ofFloat(rotatingDrawable, "rotation", EXPANDED_PLUS_ROTATION, COLLAPSED_PLUS_ROTATION);
-        final ObjectAnimator expandAnimator = ObjectAnimator.ofFloat(rotatingDrawable, "rotation", COLLAPSED_PLUS_ROTATION, EXPANDED_PLUS_ROTATION);
-        collapseAnimator.setInterpolator(interpolator);
-        expandAnimator.setInterpolator(interpolator);
-        mExpandAnimation.play(expandAnimator);
-        mCollapseAnimation.play(collapseAnimator);
-        mMenuButton.setImageDrawable(rotatingDrawable);
-
+        mMenuButton.setImageDrawable(getMenuDrawable(drawable));
         mMenuButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -608,6 +620,18 @@ public class GFFloatingActionMenu extends ViewGroup {
 
         addView(mMenuButton, super.generateDefaultLayoutParams());
         mButtonsCount++;
+    }
+
+    private RotatingDrawable getMenuDrawable(Drawable drawable) {
+        mRotatingDrawable = new RotatingDrawable(drawable);
+        final OvershootInterpolator interpolator = new OvershootInterpolator();
+        final ObjectAnimator collapseAnimator = ObjectAnimator.ofFloat(mRotatingDrawable, "rotation", mExpandedIconRotation, mCollapsedIconRotation);
+        final ObjectAnimator expandAnimator = ObjectAnimator.ofFloat(mRotatingDrawable, "rotation", mCollapsedIconRotation, mExpandedIconRotation);
+        collapseAnimator.setInterpolator(interpolator);
+        expandAnimator.setInterpolator(interpolator);
+        mExpandAnimation.play(expandAnimator);
+        mCollapseAnimation.play(collapseAnimator);
+        return mRotatingDrawable;
     }
 
     private int adjustForOvershoot(int dimension) {
