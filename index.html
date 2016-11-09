@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Gffloatingactionmenu by gfranks</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Gffloatingactionmenu</h1>
+          <h2></h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/gfranks/GFFloatingActionMenu/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/gfranks/GFFloatingActionMenu/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/gfranks/GFFloatingActionMenu" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h1>
+<a id="gffloatingactionmenu" class="anchor" href="#gffloatingactionmenu" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>GFFloatingActionMenu</h1>
+
+<p>GFFloatingActionMenu was inspired by <a href="https://github.com/futuresimple/android-floating-action-button">https://github.com/futuresimple/android-floating-action-button</a></p>
+
+<p>A few additions have been made but with the adoption of the support library's FloatingActionButton.</p>
+
+<p>If you would like to contribute or have any issues, please use the issue tracker or email me directly at <a href="mailto:lgfz71@gmail.com">lgfz71@gmail.com</a></p>
+
+<p><img src="https://raw.githubusercontent.com/gfranks/GFFloatingActionMenu/master/images/fam.gif" alt="alt tag"></p>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage:</h2>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">&lt;</span><span class="pl-smi">com.github.gfranks.floatingactionmenu<span class="pl-k">.</span>GFFloatingActionMenu</span> xmlns<span class="pl-k">:</span>android<span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>http://schemas.android.com/apk/res/android<span class="pl-pds">"</span></span>
+    xmlns<span class="pl-k">:</span>app<span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>http://schemas.android.com/apk/res-auto<span class="pl-pds">"</span></span>
+    android<span class="pl-k">:</span>layout_width<span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>wrap_content<span class="pl-pds">"</span></span>
+    android<span class="pl-k">:</span>layout_height<span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>wrap_content<span class="pl-pds">"</span></span>
+    android<span class="pl-k">:</span>layout_gravity<span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>bottom|end<span class="pl-pds">"</span></span>
+    android<span class="pl-k">:</span>layout_margin<span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>@dimen/fab_margin<span class="pl-pds">"</span></span>
+    app<span class="pl-k">:</span>fam_rippleColor<span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>@color/fab_color_dark<span class="pl-pds">"</span></span>
+    app<span class="pl-k">:</span>fam_backgroundTint<span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>@color/fab_color<span class="pl-pds">"</span></span>
+    app<span class="pl-k">:</span>fam_icon<span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>@drawable/ic_plus<span class="pl-pds">"</span></span>
+    app<span class="pl-k">:</span>fam_iconTint<span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>@color/white<span class="pl-pds">"</span></span>
+    app<span class="pl-k">:</span>fam_expandDirection<span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>arcLeftUp<span class="pl-pds">"</span></span><span class="pl-k">&gt;</span>
+
+    <span class="pl-k">&lt;</span><span class="pl-smi">android.support.design.widget<span class="pl-k">.</span>FloatingActionButton</span>
+        android<span class="pl-k">:</span>id<span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>@+id/fab_1<span class="pl-pds">"</span></span>
+        android<span class="pl-k">:</span>layout_width<span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>wrap_content<span class="pl-pds">"</span></span>
+        android<span class="pl-k">:</span>layout_height<span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>wrap_content<span class="pl-pds">"</span></span>
+        android<span class="pl-k">:</span>tint<span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>@color/white<span class="pl-pds">"</span></span>
+        app<span class="pl-k">:</span>srcCompat<span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>@drawable/fab_1_icon<span class="pl-pds">"</span></span>
+        app<span class="pl-k">:</span>rippleColor<span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>@color/fab_color_dark<span class="pl-pds">"</span></span>
+        app<span class="pl-k">:</span>backgroundTint<span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>@color/fab_color<span class="pl-pds">"</span></span> <span class="pl-k">/</span><span class="pl-k">&gt;</span>
+
+    <span class="pl-k">&lt;</span><span class="pl-smi">android.support.design.widget<span class="pl-k">.</span>FloatingActionButton</span>
+        android<span class="pl-k">:</span>id<span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>@+id/fab_2<span class="pl-pds">"</span></span>
+        android<span class="pl-k">:</span>layout_width<span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>wrap_content<span class="pl-pds">"</span></span>
+        android<span class="pl-k">:</span>layout_height<span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>wrap_content<span class="pl-pds">"</span></span>
+        android<span class="pl-k">:</span>tint<span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>@color/white<span class="pl-pds">"</span></span>
+        app<span class="pl-k">:</span>srcCompat<span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>@drawable/fab_2_icon<span class="pl-pds">"</span></span>
+        app<span class="pl-k">:</span>rippleColor<span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>@color/fab_color_dark<span class="pl-pds">"</span></span>
+        app<span class="pl-k">:</span>backgroundTint<span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>@color/fab_color<span class="pl-pds">"</span></span> <span class="pl-k">/</span><span class="pl-k">&gt;</span>
+
+    <span class="pl-k">&lt;</span><span class="pl-smi">android.support.design.widget<span class="pl-k">.</span>FloatingActionButton</span>
+        android<span class="pl-k">:</span>id<span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>@+id/fab_3<span class="pl-pds">"</span></span>
+        android<span class="pl-k">:</span>layout_width<span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>wrap_content<span class="pl-pds">"</span></span>
+        android<span class="pl-k">:</span>layout_height<span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>wrap_content<span class="pl-pds">"</span></span>
+        android<span class="pl-k">:</span>tint<span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>@color/white<span class="pl-pds">"</span></span>
+        app<span class="pl-k">:</span>srcCompat<span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>@drawable/fab_3_icon<span class="pl-pds">"</span></span>
+        app<span class="pl-k">:</span>rippleColor<span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>@color/fab_color_dark<span class="pl-pds">"</span></span>
+        app<span class="pl-k">:</span>backgroundTint<span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>@color/fab_color<span class="pl-pds">"</span></span> <span class="pl-k">/</span><span class="pl-k">&gt;</span>
+
+<span class="pl-k">&lt;</span><span class="pl-k">/</span><span class="pl-smi">com.github.gfranks.floatingactionmenu<span class="pl-k">.</span>GFFloatingActionMenu</span><span class="pl-k">&gt;</span></pre></div>
+
+<h2>
+<a id="customization" class="anchor" href="#customization" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Customization:</h2>
+
+<ul>
+<li>
+<code>fam_rippleColor</code> Color for the ripple effect on the menu FloatingActionButton</li>
+<li>
+<code>fam_backgroundTint</code> Color for the menu FloatingActionButton</li>
+<li>
+<code>fam_iconTint</code> Color for the default/specified menu icon</li>
+<li>
+<code>fam_icon</code> Drawable resource for the menu icon, defaults to a plus (vector image supported)</li>
+<li>
+<code>fam_elevation</code> Elevation for the menu FloatingActionButton</li>
+<li>
+<code>fam_expandIconRotation</code> Expand rotation of the icon when expanding the menu</li>
+<li>
+<code>fam_collapseIconRotation</code> Collapsed rotation of the icon when expanding the menu</li>
+<li>
+<p><code>fam_expandDirection</code> Direction the menu will open (up, down, left, right, arcLeftUp, arcLeftDown, arcRightUp, arcRightDown)</p>
+
+<p>Note: GFFloatingActionButton comes with a default CoordinatorLayout.Behavior supporting both AppBarLayout anchoring and bottom sheets. You may override this for your own Behaviors.  </p>
+</li>
+</ul>
+
+<h2>
+<a id="callback-methods" class="anchor" href="#callback-methods" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Callback Methods:</h2>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-c">/**</span>
+<span class="pl-c"> * OnFloatingActionsMenuUpdateListener</span>
+<span class="pl-c"> */</span>
+<span class="pl-k">void</span> onMenuExpanded();
+<span class="pl-k">void</span> onMenuCollapsed();</pre></div>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation:</h2>
+
+<h3>
+<a id="directly-include-source-into-your-projects" class="anchor" href="#directly-include-source-into-your-projects" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Directly include source into your projects</h3>
+
+<ul>
+<li>Simply copy the source/resource files from the library folder into your project.</li>
+</ul>
+
+<h3>
+<a id="use-binary-approach" class="anchor" href="#use-binary-approach" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Use binary approach</h3>
+
+<ul>
+<li>
+<p>Follow these steps to include aar binary in your project:</p>
+
+<p>1: Copy com.github.gfranks.floatingactionmenu-1.0.aar into your projects libs/ directory.</p>
+
+<p>2: Include the following either in your top level build.gradle file or your module specific one:</p>
+
+<pre><code>  repositories {
+     flatDir {
+         dirs 'libs'
+     }
+ }
+</code></pre>
+
+<p>3: Under your dependencies for your main module's build.gradle file, you can reference that aar file like so: 
+<code>compile 'com.github.gfranks.floatingactionmenu:com.github.gfranks.floatingactionmenu-1.0@aar'</code></p>
+</li>
+</ul>
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h2>
+
+<p>Copyright (c) 2015 Garrett Franks. All rights reserved.</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</p>
+        </section>
+
+        <footer>
+          Gffloatingactionmenu is maintained by <a href="https://github.com/gfranks">gfranks</a><br>
+          This page was generated by <a href="https://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>
