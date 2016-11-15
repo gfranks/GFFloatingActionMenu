@@ -728,6 +728,7 @@ public class GFFloatingActionMenu extends ViewGroup {
                 label.setTextAppearance(getContext(), mLabelsStyle);
             }
             label.setText(button.getTitle());
+            ViewCompat.setElevation(label, (int) (5 * getResources().getDisplayMetrics().density));
             addView(label);
 
             button.setTag(R.id.fab_label, label);
