@@ -26,30 +26,34 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
+        app:fam_labelStyle="@style/AppTheme.FamLabelStyle"
         app:fam_backgroundTint="@color/colorAccent"
         app:fam_rippleColor="@color/colorAccentDark"
-        app:fam_expandDirection="arcLeftUp">
+        app:fam_expandDirection="up">
 
-        <android.support.design.widget.FloatingActionButton
+        <com.github.gfranks.floatingactionmenu.GFFloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ic_call"
             app:backgroundTint="@color/colorAccent"
-            app:rippleColor="@color/colorAccentDark" />
+            app:rippleColor="@color/colorAccentDark"
+            app:fab_title="Call" />
 
-        <android.support.design.widget.FloatingActionButton
+        <com.github.gfranks.floatingactionmenu.GFFloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ic_email"
             app:backgroundTint="@color/colorAccent"
-            app:rippleColor="@color/colorAccentDark" />
+            app:rippleColor="@color/colorAccentDark"
+            app:fab_title="Email" />
 
-        <android.support.design.widget.FloatingActionButton
+        <com.github.gfranks.floatingactionmenu.GFFloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ic_heart"
             app:backgroundTint="@color/colorAccent"
-            app:rippleColor="@color/colorAccentDark" />
+            app:rippleColor="@color/colorAccentDark"
+            app:fab_title="Favorite" />
 
     </com.github.gfranks.floatingactionmenu.GFFloatingActionMenu>
 

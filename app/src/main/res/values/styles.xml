@@ -34,4 +34,9 @@
         <item name="android:textColorSecondary">@color/light_gray</item>
     </style>
 
+    <style name="AppTheme.FamLabelStyle">
+        <item name="android:background">@drawable/bg_fab_label</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
 </resources>

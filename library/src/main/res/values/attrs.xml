@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <declare-styleable name="GFFloatingActionButton">
+        <attr name="fab_title" format="string"/>
+    </declare-styleable>
+
     <declare-styleable name="GFFloatingActionMenu">
         <attr name="fam_rippleColor" format="color"/>
         <attr name="fam_backgroundTint" format="color"/>
@@ -8,6 +12,11 @@
         <attr name="fam_elevation" format="dimension"/>
         <attr name="fam_expandIconRotation" format="float" />
         <attr name="fam_collapseIconRotation" format="float" />
+        <attr name="fam_labelStyle" format="reference"/>
+        <attr name="fam_labelPosition" format="enum">
+            <enum name="left" value="0"/>
+            <enum name="right" value="1"/>
+        </attr>
         <attr name="fam_expandDirection" format="enum">
             <enum name="up" value="0"/>
             <enum name="down" value="1"/>

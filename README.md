@@ -24,6 +24,21 @@ Usage:
     app:fam_icon="@drawable/ic_plus"
     app:fam_iconTint="@color/white"
     app:fam_expandDirection="arcLeftUp">
+    
+    <!-- If you use GFFloatingActionButton you may supply a label title for display.
+         Label titles can only be used when using vertical expand directions
+         and require you setting a label style on the menu. GFFloatingActionButton extends 
+         FloatingActionButton and inherets all attributes.
+    -->
+    <com.github.gfranks.floatingactionmenu.GFFloatingActionButton
+        android:id="@+id/fab_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tint="@color/white"
+        app:srcCompat="@drawable/fab_2_icon"
+        app:rippleColor="@color/fab_color_dark"
+        app:backgroundTint="@color/fab_color"
+        app:fab_title="Fab Title" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_1"
@@ -65,6 +80,8 @@ Customization:
  * `fam_elevation` Elevation for the menu FloatingActionButton
  * `fam_expandIconRotation` Expand rotation of the icon when expanding the menu
  * `fam_collapseIconRotation` Collapsed rotation of the icon when expanding the menu
+ * `fam_labelStyle` Text style to use on the Label for each floating action button that supports labels
+ * `fam_labelPosition` Position of the labels when using vertical expand directions (0 for left, 1 for right)
  * `fam_expandDirection` Direction the menu will open (up, down, left, right, arcLeftUp, arcLeftDown, arcRightUp, arcRightDown)
  
  Note: GFFloatingActionButton comes with a default CoordinatorLayout.Behavior supporting both AppBarLayout anchoring and bottom sheets. You may override this for your own Behaviors.  
