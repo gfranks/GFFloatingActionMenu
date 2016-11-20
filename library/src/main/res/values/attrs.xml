@@ -12,6 +12,8 @@
         <attr name="fam_elevation" format="dimension"/>
         <attr name="fam_expandIconRotation" format="float" />
         <attr name="fam_collapseIconRotation" format="float" />
+        <attr name="fam_dimWhenExpanded" format="boolean" />
+        <attr name="fam_dimWhenExpandedColor" format="color" />
         <attr name="fam_labelStyle" format="reference"/>
         <attr name="fam_labelPosition" format="enum">
             <enum name="left" value="0"/>

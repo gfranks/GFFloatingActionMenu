@@ -1,7 +1,9 @@
 package com.github.gfranks.floatingactionmenu;
 
 import android.animation.AnimatorSet;
+import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
@@ -24,6 +26,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -35,6 +38,8 @@ import android.view.animation.Interpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.TextView;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +50,7 @@ public class GFFloatingActionMenu extends ViewGroup {
     private static Interpolator sCollapseInterpolator = new DecelerateInterpolator(3f);
     private static Interpolator sAlphaExpandInterpolator = new DecelerateInterpolator();
 
+    @Retention(RetentionPolicy.SOURCE)
     @IntDef({EXPAND_UP, EXPAND_DOWN, EXPAND_LEFT, EXPAND_RIGHT, EXPAND_ARC_LEFT_UP, EXPAND_ARC_LEFT_DOWN, EXPAND_ARC_RIGHT_UP, EXPAND_ARC_RIGHT_DOWN})
     public @interface ExpandDirection {}
     public static final int EXPAND_UP = 0;
@@ -56,8 +62,11 @@ public class GFFloatingActionMenu extends ViewGroup {
     public static final int EXPAND_ARC_RIGHT_UP = 6;
     public static final int EXPAND_ARC_RIGHT_DOWN = 7;
 
-    public static final int LABELS_ON_LEFT_SIDE = 0;
-    public static final int LABELS_ON_RIGHT_SIDE = 1;
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({LABELS_LEFT, LABELS_RIGHT})
+    public @interface LabelPosition {}
+    public static final int LABELS_LEFT = 0;
+    public static final int LABELS_RIGHT = 1;
 
     private static final int ANIMATION_DURATION = 300;
 
@@ -69,6 +78,9 @@ public class GFFloatingActionMenu extends ViewGroup {
     private int mExpandDirection;
     private float mCollapsedIconRotation = 0f;
     private float mExpandedIconRotation = 90f + 45f;
+    private boolean mDimWhenExpanded;
+    private int mExpandedDimColor = Color.parseColor("#77000000");
+    private int mCollapsedDimColor;
     private int mLabelsStyle;
     private int mLabelsPosition;
     private boolean mExpanded;
@@ -108,6 +120,8 @@ public class GFFloatingActionMenu extends ViewGroup {
     }
 
     private void init(Context context, AttributeSet attributeSet) {
+        setClipChildren(false);
+        setClipToPadding(false);
         mButtonSpacing = (int) (15 * getResources().getDisplayMetrics().density);
         mLabelsMargin = (int) (8 * getResources().getDisplayMetrics().density);
 
@@ -123,13 +137,11 @@ public class GFFloatingActionMenu extends ViewGroup {
         mExpandDirection = attr.getInt(R.styleable.GFFloatingActionMenu_fam_expandDirection, EXPAND_UP);
         mExpandedIconRotation = attr.getFloat(R.styleable.GFFloatingActionMenu_fam_expandIconRotation, mExpandedIconRotation);
         mCollapsedIconRotation = attr.getFloat(R.styleable.GFFloatingActionMenu_fam_collapseIconRotation, mCollapsedIconRotation);
+        setDimWhenExpanded(attr.getBoolean(R.styleable.GFFloatingActionMenu_fam_dimWhenExpanded, mDimWhenExpanded));
+        setDimWhenExpandedColor(attr.getColor(R.styleable.GFFloatingActionMenu_fam_dimWhenExpandedColor, mExpandedDimColor));
         mLabelsStyle = attr.getResourceId(R.styleable.GFFloatingActionMenu_fam_labelStyle, 0);
-        mLabelsPosition = attr.getInt(R.styleable.GFFloatingActionMenu_fam_labelPosition, LABELS_ON_LEFT_SIDE);
+        mLabelsPosition = attr.getInt(R.styleable.GFFloatingActionMenu_fam_labelPosition, LABELS_LEFT);
         attr.recycle();
-
-        if (mLabelsStyle != 0 && !expandsVertically()) {
-            throw new IllegalStateException("Action labels in horizontal or arc expand direction is not supported.");
-        }
 
         mMenuIcon = ContextCompat.getDrawable(getContext(), menuIcon);
 
@@ -184,6 +196,11 @@ public class GFFloatingActionMenu extends ViewGroup {
             }
         }
 
+        if (mDimWhenExpanded) {
+            setMeasuredDimension(((View) getParent()).getMeasuredWidth(), ((View) getParent()).getMeasuredHeight());
+            return;
+        }
+
         if (expandsHorizontally()) {
             height = mMaxButtonHeight;
         } else if (expandsVertically()) {
@@ -220,6 +237,16 @@ public class GFFloatingActionMenu extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        t += getPaddingTop();
+        b -= getPaddingBottom();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            l += getPaddingStart();
+            r -= getPaddingEnd();
+        } else {
+            l += getPaddingLeft();
+            r -= getPaddingRight();
+        }
+
         switch (mExpandDirection) {
             case EXPAND_UP:
             case EXPAND_DOWN: {
@@ -233,17 +260,18 @@ public class GFFloatingActionMenu extends ViewGroup {
                 if (expandUp) {
                     addButtonY = getAdjustedYCoordinateForAppBarLayoutAnchor(b - t - mMenuButton.getMeasuredHeight());
                 } else {
-                    addButtonY = getAdjustedYCoordinateForAppBarLayoutAnchor(0);
+                    addButtonY = getAdjustedYCoordinateForAppBarLayoutAnchor(t);
                 }
                 // Ensure mMenuButton is centered on the line where the buttons should be
-                int buttonsHorizontalCenter = mLabelsPosition == LABELS_ON_LEFT_SIDE
+                int buttonsHorizontalCenter = mLabelsPosition == LABELS_LEFT
                         ? r - l - mMaxButtonWidth / 2
                         : mMaxButtonWidth / 2;
-                int addButtonLeft = buttonsHorizontalCenter - mMenuButton.getMeasuredWidth() / 2;
+
+                int addButtonLeft = (buttonsHorizontalCenter - mMenuButton.getMeasuredWidth() / 2);
                 mMenuButton.layout(addButtonLeft, addButtonY, addButtonLeft + mMenuButton.getMeasuredWidth(), addButtonY + mMenuButton.getMeasuredHeight());
 
                 int labelsOffset = mMaxButtonWidth / 2 + mLabelsMargin;
-                int labelsXNearButton = mLabelsPosition == LABELS_ON_LEFT_SIDE
+                int labelsXNearButton = mLabelsPosition == LABELS_LEFT
                         ? buttonsHorizontalCenter - labelsOffset
                         : buttonsHorizontalCenter + labelsOffset;
 
@@ -256,7 +284,7 @@ public class GFFloatingActionMenu extends ViewGroup {
 
                     if (child == mMenuButton || child.getVisibility() == GONE) continue;
 
-                    int childX = buttonsHorizontalCenter - child.getMeasuredWidth() / 2;
+                    int childX = (buttonsHorizontalCenter - child.getMeasuredWidth() / 2);
                     int childY;
                     if (expandUp) {
                         childY = nextY - child.getMeasuredHeight();
@@ -278,13 +306,13 @@ public class GFFloatingActionMenu extends ViewGroup {
 
                     View label = (View) child.getTag(R.id.fab_label);
                     if (label != null) {
-                        int labelXAwayFromButton = mLabelsPosition == LABELS_ON_LEFT_SIDE
+                        int labelXAwayFromButton = mLabelsPosition == LABELS_LEFT
                                 ? labelsXNearButton - label.getMeasuredWidth()
                                 : labelsXNearButton + label.getMeasuredWidth();
 
                         int labelLeft;
                         int labelRight;
-                        if (mLabelsPosition == LABELS_ON_LEFT_SIDE) {
+                        if (mLabelsPosition == LABELS_LEFT) {
                             labelLeft = labelXAwayFromButton;
                             labelRight = labelsXNearButton;
                         } else {
@@ -293,7 +321,6 @@ public class GFFloatingActionMenu extends ViewGroup {
                         }
 
                         int labelTop = childY + (child.getMeasuredHeight() - label.getMeasuredHeight()) / 2;
-
                         label.layout(labelLeft, labelTop, labelRight, labelTop + label.getMeasuredHeight());
 
                         Rect touchArea = new Rect(
@@ -326,7 +353,7 @@ public class GFFloatingActionMenu extends ViewGroup {
                 if (expandLeft) {
                     addButtonX = r - l - mMenuButton.getMeasuredWidth();
                 } else {
-                    addButtonX = 0;
+                    addButtonX = l;
                 }
                 // Ensure mMenuButton is centered on the line where the buttons should be
                 int addButtonTop = getAdjustedYCoordinateForAppBarLayoutAnchor(b - t - mMaxButtonHeight + (mMaxButtonHeight - mMenuButton.getMeasuredHeight()) / 2);
@@ -378,13 +405,13 @@ public class GFFloatingActionMenu extends ViewGroup {
                 if (expandLeft) {
                     addButtonX = r - l - mMenuButton.getMeasuredWidth();
                 } else {
-                    addButtonX = 0;
+                    addButtonX = l;
                 }
                 int addButtonY;
                 if (expandUp) {
                     addButtonY = getAdjustedYCoordinateForAppBarLayoutAnchor(b - t - mMenuButton.getMeasuredHeight());
                 } else {
-                    addButtonY = getAdjustedYCoordinateForAppBarLayoutAnchor(0);
+                    addButtonY = getAdjustedYCoordinateForAppBarLayoutAnchor(t);
                 }
                 mMenuButton.layout(addButtonX, addButtonY, addButtonX + mMenuButton.getMeasuredWidth(), addButtonY + mMenuButton.getMeasuredHeight());
 
@@ -408,8 +435,8 @@ public class GFFloatingActionMenu extends ViewGroup {
                     if (child == mMenuButton || child.getVisibility() == GONE) continue;
 
                     double totalAngleForChild = eachAngle * (i);
-                    leftPoint = (int) ((getMeasuredWidth() * Math.cos(Math.toRadians(totalAngleForChild))) / 2);
-                    topPoint = (int) ((getMeasuredHeight() * Math.sin(Math.toRadians(totalAngleForChild))) / 2);
+                    leftPoint = (int) (((mMaxButtonWidth * mButtonsCount) * Math.cos(Math.toRadians(totalAngleForChild))) / 2);
+                    topPoint = (int) (((mMaxButtonHeight * mButtonsCount) * Math.sin(Math.toRadians(totalAngleForChild))) / 2);
 
                     if (expandLeft) {
                         left = addButtonX - leftPoint;
@@ -532,6 +559,36 @@ public class GFFloatingActionMenu extends ViewGroup {
         requestLayout();
     }
 
+    public @LabelPosition int getLabelPosition() {
+        return mLabelsPosition;
+    }
+
+    public void setLabelPosition(@LabelPosition int labelPosition) {
+        mLabelsPosition = labelPosition;
+        requestLayout();
+    }
+
+    public boolean dimWhenExpanded() {
+        return mDimWhenExpanded;
+    }
+
+    public void setDimWhenExpanded(boolean dimWhenExpanded) {
+        mDimWhenExpanded = dimWhenExpanded;
+        if (dimWhenExpanded && getLayoutParams() instanceof CoordinatorLayout.LayoutParams && (((CoordinatorLayout.LayoutParams) getLayoutParams()).getAnchorId() != NO_ID)) {
+            throw new IllegalStateException("Dimming when anchored to a view is not supported");
+        }
+        requestLayout();
+    }
+
+    public int getDimWhenExpandedColor() {
+        return mExpandedDimColor;
+    }
+
+    public void setDimWhenExpandedColor(int dimWhenExpandedColor) {
+        mExpandedDimColor = dimWhenExpandedColor;
+        mCollapsedDimColor = mExpandedDimColor & 0x00FFFFFF;
+    }
+
     public int getMenuOptionCount() {
         return mButtonsCount - 1;
     }
@@ -609,6 +666,20 @@ public class GFFloatingActionMenu extends ViewGroup {
         if (!mExpanded) {
             mExpanded = true;
             mTouchDelegateGroup.setEnabled(true);
+            if (mDimWhenExpanded) {
+                ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), mCollapsedDimColor, mExpandedDimColor);
+                colorAnimation.setDuration(ANIMATION_DURATION - 25);
+                colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animator) {
+                        setBackgroundColor((int) animator.getAnimatedValue());
+                    }
+
+                });
+                mExpandAnimation.play(colorAnimation);
+            }
+
             mCollapseAnimation.cancel();
             mExpandAnimation.start();
 
@@ -668,6 +739,20 @@ public class GFFloatingActionMenu extends ViewGroup {
             mExpanded = false;
             mTouchDelegateGroup.setEnabled(false);
             mCollapseAnimation.setDuration(immediately ? 0 : ANIMATION_DURATION);
+            if (mDimWhenExpanded) {
+                ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), mExpandedDimColor, mCollapsedDimColor);
+                colorAnimation.setDuration(immediately ? 0 : ANIMATION_DURATION - 25);
+                colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animator) {
+                        setBackgroundColor((int) animator.getAnimatedValue());
+                    }
+
+                });
+                mCollapseAnimation.play(colorAnimation);
+            }
+
             mCollapseAnimation.start();
             mExpandAnimation.cancel();
 
@@ -709,6 +794,11 @@ public class GFFloatingActionMenu extends ViewGroup {
     private void createLabels() {
         Context context = new ContextThemeWrapper(getContext(), mLabelsStyle);
 
+        if (!expandsVertically()) {
+            Log.e(getClass().getName(), "Labels are only supported on vertical expand directions");
+            return;
+        }
+
         for (int i = 0; i < mButtonsCount; i++) {
             if (!(getChildAt(i) instanceof GFFloatingActionButton)) {
                 continue;
@@ -749,6 +839,16 @@ public class GFFloatingActionMenu extends ViewGroup {
 
     private int adjustForOvershoot(int dimension) {
         return dimension * 12 / 10;
+    }
+
+    private AppBarLayout findFirstDependency(List<View> views) {
+        for (int i = 0, z = views.size(); i < z; i++) {
+            View view = views.get(i);
+            if (view instanceof AppBarLayout) {
+                return (AppBarLayout) view;
+            }
+        }
+        return null;
     }
 
     private int getAdjustedYCoordinateForAppBarLayoutAnchor(int initialY) {
@@ -920,22 +1020,6 @@ public class GFFloatingActionMenu extends ViewGroup {
             super(USELESS_HACKY_RECT, uselessHackyView);
         }
 
-        void addTouchDelegate(@NonNull TouchDelegate touchDelegate) {
-            mTouchDelegates.add(touchDelegate);
-        }
-
-        void removeTouchDelegate(TouchDelegate touchDelegate) {
-            mTouchDelegates.remove(touchDelegate);
-            if (mCurrentTouchDelegate == touchDelegate) {
-                mCurrentTouchDelegate = null;
-            }
-        }
-
-        void clearTouchDelegates() {
-            mTouchDelegates.clear();
-            mCurrentTouchDelegate = null;
-        }
-
         @Override
         public boolean onTouchEvent(@NonNull MotionEvent event) {
             if (!mEnabled) return false;
@@ -967,8 +1051,24 @@ public class GFFloatingActionMenu extends ViewGroup {
             return delegate != null && delegate.onTouchEvent(event);
         }
 
-        public void setEnabled(boolean enabled) {
+        void setEnabled(boolean enabled) {
             mEnabled = enabled;
+        }
+
+        void addTouchDelegate(@NonNull TouchDelegate touchDelegate) {
+            mTouchDelegates.add(touchDelegate);
+        }
+
+        void removeTouchDelegate(TouchDelegate touchDelegate) {
+            mTouchDelegates.remove(touchDelegate);
+            if (mCurrentTouchDelegate == touchDelegate) {
+                mCurrentTouchDelegate = null;
+            }
+        }
+
+        void clearTouchDelegates() {
+            mTouchDelegates.clear();
+            mCurrentTouchDelegate = null;
         }
     }
 

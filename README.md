@@ -28,7 +28,7 @@ Usage:
     <!-- If you use GFFloatingActionButton you may supply a label title for display.
          Label titles can only be used when using vertical expand directions
          and require you setting a label style on the menu. GFFloatingActionButton extends 
-         FloatingActionButton and inherets all attributes.
+         FloatingActionButton and inherits all attributes.
     -->
     <com.github.gfranks.floatingactionmenu.GFFloatingActionButton
         android:id="@+id/fab_2"
@@ -73,6 +73,7 @@ Usage:
 Customization:
 ----------------
 
+GFFloatingActionMenu:
  * `fam_rippleColor` Color for the ripple effect on the menu FloatingActionButton
  * `fam_backgroundTint` Color for the menu FloatingActionButton
  * `fam_iconTint` Color for the default/specified menu icon
@@ -80,11 +81,19 @@ Customization:
  * `fam_elevation` Elevation for the menu FloatingActionButton
  * `fam_expandIconRotation` Expand rotation of the icon when expanding the menu
  * `fam_collapseIconRotation` Collapsed rotation of the icon when expanding the menu
+ * `fam_dimWhenExpanded` Set when you want to dim the background when opening the menu
+ * `fam_dimWhenExpandedColor` Color of the background when opening of the menu, this will be animated
  * `fam_labelStyle` Text style to use on the Label for each floating action button that supports labels
  * `fam_labelPosition` Position of the labels when using vertical expand directions (0 for left, 1 for right)
  * `fam_expandDirection` Direction the menu will open (up, down, left, right, arcLeftUp, arcLeftDown, arcRightUp, arcRightDown)
  
- Note: GFFloatingActionButton comes with a default CoordinatorLayout.Behavior supporting both AppBarLayout anchoring and bottom sheets. You may override this for your own Behaviors.  
+ Note: GFFloatingActionMenu comes with a default CoordinatorLayout.Behavior supporting both AppBarLayout anchoring and bottom sheets. You may override this for your own Behaviors.
+ 
+GFFloatingActionButton:
+ * `fab_title` String to use when displaying the label next to this FloatingActionButton
+ Note: GFFloatingActionButton is an extended FloatingActionButton and inherits all attributes but allows for a label to be displayed next to it. While labels are also supported, they are only supported in vertical expand directions, up or down.
+  
+  
 
 Callback Methods:
 -----------------
