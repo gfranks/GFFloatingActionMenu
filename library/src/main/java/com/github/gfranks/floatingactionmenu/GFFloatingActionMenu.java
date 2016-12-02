@@ -613,6 +613,11 @@ public class GFFloatingActionMenu extends ViewGroup {
         mMenuButton.setImageDrawable(getMenuDrawable(drawable.getDrawable(0)));
     }
 
+    public void setLabelsStyle(int labelsStyle) {
+        mLabelsStyle = labelsStyle;
+        updateLabelsStyle();
+    }
+
     public void addButton(FloatingActionButton button) {
         addView(button, mButtonsCount - 1);
         mButtonsCount++;
@@ -678,6 +683,15 @@ public class GFFloatingActionMenu extends ViewGroup {
 
                 });
                 mExpandAnimation.play(colorAnimation);
+                setClickable(true);
+                setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (isExpanded()) {
+                            collapse();
+                        }
+                    }
+                });
             }
 
             mCollapseAnimation.cancel();
@@ -751,6 +765,8 @@ public class GFFloatingActionMenu extends ViewGroup {
 
                 });
                 mCollapseAnimation.play(colorAnimation);
+                setOnClickListener(null);
+                setClickable(false);
             }
 
             mCollapseAnimation.start();
@@ -823,6 +839,22 @@ public class GFFloatingActionMenu extends ViewGroup {
 
             button.setTag(R.id.fab_label, label);
         }
+    }
+
+    private void updateLabelsStyle() {
+        for (int i = 0; i < mButtonsCount; i++) {
+            if (!(getChildAt(i) instanceof GFFloatingActionButton)) {
+                continue;
+            }
+
+            GFFloatingActionButton button = (GFFloatingActionButton) getChildAt(i);
+            if (button.getTag(R.id.fab_label) != null) {
+                removeView((View) button.getTag(R.id.fab_label));
+                button.setTag(R.id.fab_label, null);
+            }
+        }
+
+        createLabels();
     }
 
     private RotatingDrawable getMenuDrawable(Drawable drawable) {
